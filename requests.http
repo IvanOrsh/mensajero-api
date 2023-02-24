@@ -1,0 +1,7 @@
+### auth get all
+
+GET http://localhost:5000/auth
+
+### auth post
+
+POST http://localhost:5000/auth
