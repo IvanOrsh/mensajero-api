@@ -29,7 +29,7 @@ services:
   mensajero-api:
     build:
       context: ./
-      dockerfile: ./apps/api/Dockerfile
+      dockerfile: ./apps/mensajero-api/Dockerfile
     ports:
       - '5000:5000'
     env_file:
