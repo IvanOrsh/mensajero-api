@@ -1,7 +1,10 @@
 ### auth get all
 
-GET http://localhost:5000/auth
+GET http://localhost:4000/auth
 
 ### auth post
 
-POST http://localhost:5000/auth
+POST http://localhost:4000/auth
+
+### presence
+GET http://localhost:4000/presence
