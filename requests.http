@@ -1,10 +1,30 @@
-### auth get all
+### register a user
 
+POST http://localhost:4000/auth/register
+Content-Type: application/json
+
+{
+  "firstName": "John",
+  "lastName": "Doe",
+  "email": "john@doe.com",
+  "password": "password"
+}
+
+### sign in
+POST http://localhost:4000/auth/login
+Content-Type: application/json
+
+{
+  "email": "john@doe.com",
+  "password": "password"
+}
+
+### get presence with token
+GET http://localhost:4000/presence
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoxLCJmaXJzdE5hbWUiOiJKb2huIiwibGFzdE5hbWUiOiJEb2UiLCJlbWFpbCI6ImpvaG5AZG9lLmNvbSIsInBhc3N3b3JkIjoiJDJiJDEyJDYvdGhHZW5aTldoSE9tUGRseUI3SS5YbGtNVS82R1NJNmlkMWc0VFVjbHB1VmFJRDVRR2ZPIn0sImlhdCI6MTY3NzM3MTUyOCwiZXhwIjoxNjc3Mzc1MTI4fQ.ax_7VM60Jlw1eBJbcdCFMHDVWni1MEm_2SLfGdbaOr0
+
+### get all users
 GET http://localhost:4000/auth
-
-### auth post
-
-POST http://localhost:4000/auth
 
 ### presence
 GET http://localhost:4000/presence

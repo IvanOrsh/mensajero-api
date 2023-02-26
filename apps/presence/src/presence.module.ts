@@ -13,6 +13,7 @@ import { PresenceService } from './presence.service';
     }),
 
     SharedModule,
+    // SharedModule.registerRmq('AUTH_SERVICE', process.env.RABBITMQ_AUTH_QUEUE),
   ],
   controllers: [PresenceController],
   providers: [PresenceService],
