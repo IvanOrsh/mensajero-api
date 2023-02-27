@@ -1,36 +1,42 @@
 import {
   ConflictException,
+  Inject,
   Injectable,
   UnauthorizedException,
 } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
 
 import * as bcrypt from 'bcrypt';
 import { Repository } from 'typeorm';
 import { JwtService } from '@nestjs/jwt';
 
-import { User } from './user.entity';
+import { User } from '@app/shared/entities/user.entity';
 import { NewUserDto } from './dtos/new-user.dto';
 import { ExistingUserDto } from './dtos/existing-user.dto';
+import { AuthServiceInterface } from './interfaces/auth.service.interface';
+import { UsersRepositoryInterface } from '@app/shared';
 
 @Injectable()
-export class AuthService {
+export class AuthService implements AuthServiceInterface {
   constructor(
-    @InjectRepository(User)
-    private readonly usersRepository: Repository<User>,
+    @Inject('UsersRepositoryInterface')
+    private readonly usersRepository: UsersRepositoryInterface,
 
     private readonly jwtService: JwtService,
   ) {}
 
   async getUsers() {
-    return await this.usersRepository.find();
+    return await this.usersRepository.findAll();
   }
 
   async findByEmail(email: string): Promise<User> {
-    return await this.usersRepository.findOne({
+    return await this.usersRepository.findByCondition({
       where: { email },
       select: ['id', 'firstName', 'lastName', 'email', 'password'],
     });
+  }
+
+  async findById(id: number): Promise<User> {
+    return this.usersRepository.findOneById(id);
   }
 
   async hashPassword(password: string): Promise<string> {
@@ -92,21 +98,24 @@ export class AuthService {
       throw new UnauthorizedException();
     }
 
+    delete user.password;
+
     const jwt = await this.jwtService.signAsync({ user });
 
     return {
       token: jwt,
+      user,
     };
   }
 
-  async verifyJwt(jwt: string): Promise<{ exp: number }> {
+  async verifyJwt(jwt: string): Promise<{ user: User; exp: number }> {
     if (!jwt) {
       throw new UnauthorizedException();
     }
 
     try {
-      const { exp } = await this.jwtService.verifyAsync(jwt);
-      return { exp };
+      const { user, exp } = await this.jwtService.verifyAsync(jwt);
+      return { user, exp };
     } catch (error) {
       throw new UnauthorizedException();
     }

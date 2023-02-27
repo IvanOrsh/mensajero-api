@@ -1,6 +1,6 @@
 import { DataSource, DataSourceOptions } from 'typeorm';
 
-import { User } from '../user.entity';
+import { User } from '@app/shared/entities/user.entity';
 
 export const dataSourceOptions: DataSourceOptions = {
   type: 'postgres',
